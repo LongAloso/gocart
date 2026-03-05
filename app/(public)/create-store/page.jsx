@@ -40,7 +40,7 @@ export default function CreateStore() {
 
             if (['approved', 'rejected', 'pending'].includes(data.status)) {
             setStatus(data.status)
-            setAlreadySubmitted(true)
+            setAlreadySubmitted(true) 
 
             switch (data.status) {
                 case "approved":
@@ -51,7 +51,7 @@ export default function CreateStore() {
                     setMessage("Your store has been rejected, contact the admin for more details")
                     break;
                 case "pending":
-                    setMessage("Your sotre request is pending, please wait for admin to approve your store")
+                    setMessage("Your store request is pending, please wait for admin to approve your store")
                     break;
 
                 default:
