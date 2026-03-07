@@ -6,11 +6,11 @@ import { NextResponse } from "next/server";
 // Get all approved stores
 export async function GET(request) {
     try {
-        const {userId} = getAuth(request)
+        const { userId } = getAuth(request)
         const isAdmin = await authAdmin(userId)
 
         if(!isAdmin) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({ error: 'not authorized' }, { status: 401 })
         }
 
         const stores = await prisma.store.findMany({
