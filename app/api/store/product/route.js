@@ -21,7 +21,7 @@ export async function POST(request) {
         const mrp = Number(formData.get("mrp"))
         const price = Number(formData.get("price"))
         const category = formData.get("category")
-        const images = formData.get("images")
+        const images = formData.getAll("images")
 
         if(!name || !description || !mrp || !price || !category || images.length < 1) {
             return NextResponse.json({error: 'not authorized'}, { status: 401})
@@ -58,11 +58,11 @@ export async function POST(request) {
             }
         })
 
-        return NextResponse.json({mesage: "Product added successfully"})
+        return NextResponse.json({ message: "Product added successfully"})
 
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error:code || error.mesage}, {status: 400})
+        return NextResponse.json({ error: error.code || error.message}, {status: 400})
     }
 }
 

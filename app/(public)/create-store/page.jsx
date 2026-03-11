@@ -11,7 +11,7 @@ import axios from "axios"
 export default function CreateStore() {
 
     const {user} = useUser()
-    const route = useRouter()
+    const router = useRouter()
     const {getToken} = useAuth()
 
     const [alreadySubmitted, setAlreadySubmitted] = useState(false)

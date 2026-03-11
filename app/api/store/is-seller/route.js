@@ -11,11 +11,11 @@ export async function GET(request) {
         if(!isSeller) {
             return NextResponse.json({ error: 'not authorized' }, { status: 401});
         }
-        const storeInfo = await prisma.store.fundUnique({where: {userId}})
+        const storeInfo = await prisma.store.findUnique({where: {userId}})
         return NextResponse.json({isSeller, storeInfo})
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error:code || error.mesage}, {status: 400})
+        return NextResponse.json({ error: error.code || error.message }, {status: 400})
     }
     
 }

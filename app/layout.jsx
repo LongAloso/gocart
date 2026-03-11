@@ -3,6 +3,8 @@ import { Toaster } from "react-hot-toast";
 import StoreProvider from "@/app/StoreProvider";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+// import { viVN } from "@clerk/localizations";
+// localization={viVN}
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
@@ -13,7 +15,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <ClerkProvider>
+        <ClerkProvider >
         <html lang="en">
             <body className={`${outfit.className} antialiased`} suppressHydrationWarning>
                 <StoreProvider>

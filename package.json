@@ -10,6 +10,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@clerk/localizations": "^4.1.0",
     "@clerk/nextjs": "^6.38.1",
     "@imagekit/nodejs": "^7.3.0",
     "@neondatabase/serverless": "^1.0.2",
@@ -22,6 +23,7 @@
     "inngest": "^3.52.3",
     "lucide-react": "^0.525.0",
     "next": "^16.1.6",
+    "openai": "^6.27.0",
     "prisma": "^6.19.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

@@ -1,5 +1,6 @@
 import authSeller from "@/middlewares/authSeller";
 import { getAuth } from "@clerk/nextjs/server";
+import { OrderStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 
@@ -10,7 +11,7 @@ export async function GET(request) {
         const storeId = await authSeller(userId)
 
         // Get all orders for seller
-        const orders = await prisma.orders.findMany({ where: {storeId}})
+        const orders = await prisma.order.findMany({ where: {storeId}})
 
         // Get all products with for seller
         const products = await prisma.product.findMany({ where: {storeId}})
@@ -22,7 +23,7 @@ export async function GET(request) {
 
         const dashboardData = {
             ratings,
-            totalOders: OrderStatus.length,
+            totalOrders: orders.length,
             totalEarnings: Math.round(orders.reduce((acc, order) => acc + order.total, 0)),
             totalProducts: products.length
         }
