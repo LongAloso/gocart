@@ -2,7 +2,6 @@ import { getAuth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import imagekit from "@/configs/imageKit"
-import { imagekit_url } from "@/configs/imageKit"
 // create the store
 export async function POST(request) {
     try {

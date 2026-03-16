@@ -23,9 +23,12 @@ export async function POST(request) {
         const category = formData.get("category")
         const images = formData.getAll("images")
 
-        if(!name || !description || !mrp || !price || !category || images.length < 1) {
+        if(!name || !description || !category || images.length < 1) {
             return NextResponse.json({error: 'not authorized'}, { status: 401})
         }
+        if (!mrp || !price) {
+            return NextResponse.json({ error: 'Price fields are missing' }, { status: 400 });
+}
 
         // Uploading Images to ImageKit
         const imageUrl = await Promise.all(images.map(async (image) => {

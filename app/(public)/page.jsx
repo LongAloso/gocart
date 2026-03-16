@@ -9,8 +9,9 @@ export default function Home() {
     return (
         <div>
             <Hero />
-            <LatestProducts />
             <BestSelling />
+            <LatestProducts />
+
             <OurSpecs />
             <Newsletter />
         </div>

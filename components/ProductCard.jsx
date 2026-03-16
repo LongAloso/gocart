@@ -1,4 +1,5 @@
 'use client'
+import { assets } from '@/assets/assets'
 import { StarIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,24 +9,59 @@ const ProductCard = ({ product }) => {
 
     const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
 
-    // calculate the average rating of the product
-    const rating = Math.round(product.rating.reduce((acc, curr) => acc + curr.rating, 0) / product.rating.length);
+    // 1. SỬA LỖI NaN: Kiểm tra mảng rating có tồn tại và có phần tử không
+    const ratingArray = Array.isArray(product.rating) ? product.rating : [];
+    const rating = ratingArray.length > 0 
+        ? Math.round(ratingArray.reduce((acc, curr) => acc + (curr.rating || 0), 0) / ratingArray.length)
+        : 0; // Nếu không có rating nào thì mặc định là 0
 
     return (
-        <Link href={`/product/${product.id}`} className=' group max-xl:mx-auto'>
-            <div className='bg-[#F5F5F5] h-40  sm:w-60 sm:h-68 rounded-lg flex items-center justify-center'>
-                <Image width={500} height={500} className='max-h-30 sm:max-h-40 w-auto group-hover:scale-115 transition duration-300' src={product.images[0]} alt="" />
+        <Link
+            href={`/product/${product.id}`}
+            className="flex flex-col items-start gap-0.5 max-w-[200px] w-full cursor-pointer"
+        >
+            <div className="cursor-pointer group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center">
+                <Image
+                    src={product.images && product.images[0] ? product.images[0] : assets.placeholder_img}
+                    alt={product.name}
+                    className="group-hover:scale-105 transition object-cover w-4/5 h-4/5 md:w-full md:h-full"
+                    width={800}
+                    height={800}
+                />
+                <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
+                    {/* 2. SỬA LỖI SRC TRỐNG: Luôn đảm bảo src không bao giờ là "" */}
+                    <Image
+                        className="h-3 w-3"
+                        src={assets.heart_icon || '/fallback-heart.svg'} 
+                        alt="heart_icon"
+                    />
+                </button>
             </div>
-            <div className='flex justify-between gap-3 text-sm text-slate-800 pt-2 max-w-60'>
-                <div>
-                    <p>{product.name}</p>
-                    <div className='flex'>
-                        {Array(5).fill('').map((_, index) => (
-                            <StarIcon key={index} size={14} className='text-transparent mt-0.5' fill={rating >= index + 1 ? "#00C950" : "#D1D5DB"} />
-                        ))}
-                    </div>
+
+            <p className="md:text-base font-medium pt-2 w-full truncate">{product.name}</p>
+            <p className="w-full text-xs text-gray-500/70 max-sm:hidden truncate">{product.description}</p>
+            
+            <div className="flex items-center gap-2">
+                {/* Hiển thị con số rating thực tế thay vì fix cứng 4.5 */}
+                <p className="text-xs">{rating}</p>
+                <div className="flex items-center gap-0.5">
+                    {Array(5).fill('').map((_, index) => (
+                        <StarIcon 
+                            key={index} 
+                            size={14} 
+                            className='text-transparent' 
+                            // Rating đã là số (0-5) nên logic này sẽ chạy mượt
+                            fill={rating >= index + 1 ? "#00C950" : "#D1D5DB"} 
+                        />
+                    ))}
                 </div>
-                <p>{currency}{product.price}</p>
+            </div>
+
+            <div className="flex items-end justify-between w-full mt-1">
+                <p className="text-base font-medium">{currency}{product.price}</p>
+                <button className=" max-sm:hidden px-4 py-1.5 text-gray-500 border border-gray-500/20 rounded-full text-xs hover:bg-slate-50 transition">
+                    Buy now
+                </button>
             </div>
         </Link>
     )

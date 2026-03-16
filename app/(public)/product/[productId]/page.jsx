@@ -1,4 +1,5 @@
 'use client'
+import BestSelling from "@/components/BestSelling";
 import ProductDescription from "@/components/ProductDescription";
 import ProductDetails from "@/components/ProductDetails";
 import { useParams } from "next/navigation";
@@ -37,7 +38,10 @@ export default function Product() {
 
                 {/* Description & Reviews */}
                 {product && (<ProductDescription product={product} />)}
+                            <div className="h-0.5 w-full bg-slate-200 mx-auto rounded-full"></div>
             </div>
+
+                <BestSelling/>
         </div>
     );
 }
