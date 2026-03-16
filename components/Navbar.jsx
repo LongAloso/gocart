@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useUser, useClerk, UserButton, Protect, useAuth } from "@clerk/nextjs";
 import axios from "axios";
-import toast from "react-hot-toast";
 
 const Navbar = () => {
 
@@ -28,14 +27,16 @@ const Navbar = () => {
             try {
                 const token = await getToken()
 
-                const { data } = await axios.get('/api/store/is-seller', {
+                const { data } = await axios.get('/api/store/check-seller', {
                     headers: { Authorization: `Bearer ${token}` }
                 })
 
                 setIsSeller(data.isSeller)
             } catch (error) {
-                toast.error(error?.response?.data?.error || error.message)
+                
             }
+        
+
         }
 
         if(user){
