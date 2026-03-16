@@ -40,7 +40,7 @@ export default function PublicLayout({ children }) {
 
     return (
         <>
-            <Banner />
+            {/* <Banner /> */}
             <Navbar />
             {children}
             <Footer />
