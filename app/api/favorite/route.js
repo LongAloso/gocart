@@ -18,7 +18,7 @@ export async function POST(request) {
             return NextResponse.json({ liked: true })
         }
     } catch (error) {
-        return NextResponse.json({ error: "Lỗi Server" }, { status: 500 })
+        return NextResponse.json({ error: "Error Server" }, { status: 500 })
     }
 }
 

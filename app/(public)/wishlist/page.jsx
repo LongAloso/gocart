@@ -1,14 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation' // Thêm useRouter để sửa lỗi click Shop
+import { useRouter } from 'next/navigation'
 import ProductCard from '@/components/ProductCard'
 import Loading from "@/components/Loading";
 import BestSelling from '@/components/BestSelling'
 
 export default function WishlistPage() {
     const { userId } = useAuth()
-    const router = useRouter() // Khởi tạo router
+    const router = useRouter() 
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -25,7 +25,6 @@ export default function WishlistPage() {
         }
     }
 
-    // HÀM QUAN TRỌNG: Xóa sản phẩm khỏi state ngay lập tức
     const handleRemoveFromUI = (productId) => {
         setProducts((prev) => prev.filter(item => item.id !== productId))
     }
@@ -71,7 +70,7 @@ export default function WishlistPage() {
                                 <ProductCard 
                                     key={item.id} 
                                     product={item} 
-                                    onRemove={handleRemoveFromUI} // Truyền hàm xóa vào Card
+                                    onRemove={handleRemoveFromUI} 
                                 />
                             ))}
                         </div>
