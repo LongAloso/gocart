@@ -7,10 +7,10 @@ const AdminNavbar = () => {
     const {user} = useUser()
 
     return (
-        <div className="flex items-center justify-between px-12 py-3 border-b border-slate-200 transition-all">
-            <Link href="/" className="relative text-4xl font-semibold text-slate-700">
-                <span className="text-green-600">Cell</span>GenS<span className="text-green-600 text-5xl leading-0">.</span>
-                <p className="absolute text-xs font-semibold -top-1 -right-13 px-3 p-0.5 rounded-full flex items-center gap-2 text-white bg-green-500">
+        <div className="flex items-center justify-between px-12 py-4 border-b border-slate-200 transition-all">
+            <Link href="/" className="relative mt-2 text-4xl font-semibold text-slate-700">
+                <span className="text-orange-600">Cell</span>GenS<span className="text-orange-600 text-5xl leading-0">.</span>
+                <p className="absolute text-xs font-semibold -top-1 -right-13 px-3 p-0.5 rounded-full flex items-center gap-2 text-white bg-orange-500">
                     Admin
                 </p>
             </Link>

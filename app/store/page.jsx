@@ -36,7 +36,13 @@ export default function Dashboard() {
         try {
             const token = await getToken()
             const { data } = await axios.get('/api/store/dashboard', { headers: { Authorization: `Bearer ${token}`}})
-            setDashboardData(data.dashboardData)
+            const sortedData = {
+            ...data.dashboardData,
+            ratings: data.dashboardData.ratings.sort((a, b) => 
+                new Date(b.createdAt) - new Date(a.createdAt)
+            )
+        }
+            setDashboardData(sortedData)
         } catch (error) {
             toast.error(error?.response?.data?.error || error.message)
         }
@@ -89,7 +95,7 @@ export default function Dashboard() {
                                     <p className="font-medium">{review.product?.name}</p>
                                     <div className='flex items-center'>
                                         {Array(5).fill('').map((_, index) => (
-                                            <StarIcon key={index} size={17} className='text-transparent mt-0.5' fill={review.rating >= index + 1 ? "#00C950" : "#D1D5DB"} />
+                                            <StarIcon key={index} size={17} className='text-transparent mt-0.5' fill={review.rating >= index + 1 ? "#FF6900" : "#D1D5DB"} />
                                         ))}
                                     </div>
                                 </div>

@@ -3,14 +3,17 @@ import BestSelling from "@/components/BestSelling";
 import ProductDescription from "@/components/ProductDescription";
 import ProductDetails from "@/components/ProductDetails";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useAuth } from "@clerk/nextjs";
 
 export default function Product() {
 
     const { productId } = useParams();
+    const { userId } = useAuth();
     const [product, setProduct] = useState();
     const products = useSelector(state => state.product.list);
+    const hasTracked = useRef(false);
 
     const fetchProduct = async () => {
         const product = products.find((product) => product.id === productId);
@@ -23,6 +26,22 @@ export default function Product() {
         }
         scrollTo(0, 0)
     }, [productId,products]);
+
+    useEffect(() => {
+            if (hasTracked.current || !userId || !productId) return;
+
+            hasTracked.current = true;
+
+            fetch("/api/track-behavior", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId, productId, action: "view" })
+            }).catch(err => {
+                console.error("Track error:", err);
+                hasTracked.current = false;
+            });
+            
+        }, [userId, productId]);
 
     return (
         <div className="mx-6">

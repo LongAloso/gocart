@@ -64,10 +64,19 @@ export async function POST(request) {
             return NextResponse.json({ error: 'not authorized'})
         }
         const { base64Image, mimeType} = await request.json()
+        if (!base64Image || !mimeType) {
+            return NextResponse.json({ error: "Missing image data" }, { status: 400 });
+        }
         const result = await main(base64Image, mimeType)
         return NextResponse.json({...result})
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: error.code || error.message }, { status: 400});
+        if (error.message === "QUOTA_EXCEEDED") {
+            return NextResponse.json(
+                { error: "The AI service is currently busy. Please try again later." }, 
+                { status: 429 }
+            );
+        }
+        return NextResponse.json({ error: error.code || "The AI service is currently busy. Please try again later." }, { status: 400});
     }
 }

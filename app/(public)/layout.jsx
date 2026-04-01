@@ -43,6 +43,7 @@ export default function PublicLayout({ children }) {
             {/* <Banner /> */}
             <Navbar />
             {children}
+
             <Footer />
         </>
     );

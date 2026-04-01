@@ -25,6 +25,7 @@ const OrderSummary = ({ totalPrice, items }) => {
     const [showAddressModal, setShowAddressModal] = useState(false);
     const [couponCodeInput, setCouponCodeInput] = useState('');
     const [coupon, setCoupon] = useState('');
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
     const handleCouponCode = async (event) => {
         event.preventDefault();
@@ -40,9 +41,10 @@ const OrderSummary = ({ totalPrice, items }) => {
             toast.error(error?.response?.data?.error || error.message)
         }
     }
-
+    console.log(items)
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
+        if (isPlacingOrder) return; //block spam click
         try {
             if(!user) {
                 return toast('Please login to place an order')
@@ -50,6 +52,8 @@ const OrderSummary = ({ totalPrice, items }) => {
             if(!selectedAddress) {
                 return toast('Please select an address')
             }
+
+            setIsPlacingOrder(true);
             const token = await getToken();
             
             const orderData = {
@@ -64,6 +68,19 @@ const OrderSummary = ({ totalPrice, items }) => {
             // Create order
             const {data} = await axios.post('/api/orders', orderData, {headers: { Authorization: `Bearer ${token}`}})
 
+            const trackPromises = items.map(item => 
+                fetch("/api/track-behavior", { 
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        userId: user.id,
+                        productId: item.id,
+                        action: "buy"
+                    })
+                })
+            );
+            await Promise.allSettled(trackPromises);
+
             if(paymentMethod === 'STRIPE') {
                 window.location.href = data.session.url
             } else {
@@ -74,8 +91,6 @@ const OrderSummary = ({ totalPrice, items }) => {
         } catch (error) {
             toast.error(error?.response?.data?.error || error.message)
         }
-        
-        router.push('/orders')
     }
 
     return (
@@ -154,8 +169,14 @@ const OrderSummary = ({ totalPrice, items }) => {
                     </Protect>
                     </p>
             </div>
-            <button onClick={e => toast.promise(handlePlaceOrder(e), { loading: 'placing Order...' })} className='w-full bg-slate-700 text-white py-2.5 rounded hover:bg-slate-900 active:scale-95 transition-all'>Place Order</button>
-
+            <button 
+                disabled={isPlacingOrder}
+                onClick={e => !isPlacingOrder && toast.promise(handlePlaceOrder(e), { loading: 'Placing Order...' })} 
+                className={`w-full text-white py-2.5 rounded transition-all active:scale-95 
+                    ${isPlacingOrder ? 'bg-slate-400 cursor-not-allowed' : 'bg-slate-700 hover:bg-slate-900'}`}
+            >
+                {isPlacingOrder ? 'Processing...' : 'Place Order'}
+            </button>
             {showAddressModal && <AddressModal setShowAddressModal={setShowAddressModal} />}
 
         </div>

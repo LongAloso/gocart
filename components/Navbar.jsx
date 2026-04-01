@@ -1,8 +1,8 @@
 'use client'
-import { PackageIcon, Search, ShoppingCart, Contact, Store } from "lucide-react";
+import { PackageIcon, Search, ShoppingCart, Contact, Store, Heart } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useUser, useClerk, UserButton, Protect, useAuth } from "@clerk/nextjs";
 import axios from "axios";
@@ -14,6 +14,7 @@ const Navbar = () => {
     const [isSeller, setIsSeller] = useState(false)
     const { openSignIn } = useClerk()
     const router = useRouter()
+    const inputRef = useRef(null);
 
     const [search, setSearch] = useState('')
     const [openSearch, setOpenSearch] = useState(false)
@@ -24,6 +25,7 @@ const Navbar = () => {
         e.preventDefault()
         router.push(`/shop?search=${search}`)
         setOpenSearch(false)
+        setSearch('')
     }
 
     useEffect(() => {
@@ -44,6 +46,33 @@ const Navbar = () => {
         }
 
     }, [user])
+    useEffect(() => {
+
+    const handleScroll = () => {
+        if (openSearch) {
+            setOpenSearch(false)
+            setSearch('');
+        }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+
+    return () => {
+        window.removeEventListener("scroll", handleScroll)
+    }
+
+    }, [openSearch])
+    
+
+    useEffect(() => {
+        if (openSearch && inputRef.current) {
+            const timeout = setTimeout(() => {
+                inputRef.current.focus();
+            }, 300); 
+            return () => clearTimeout(timeout);
+        }
+        
+    }, [openSearch]);
 
     return (
         <>
@@ -53,11 +82,11 @@ const Navbar = () => {
 
                         {/* Logo */}
                         <Link href="/" className="relative text-4xl font-semibold text-slate-700">
-                            <span className="text-green-600">Cell</span>GenS
-                            <span className="text-green-600 text-5xl">.</span>
+                            <span className="text-orange-500">Cell</span>GenS
+                            <span className="text-orange-500 text-5xl">.</span>
 
                             <Protect plan='plus'>
-                                <p className="absolute text-xs font-semibold -top-1 -right-8 px-3 p-0.5 rounded-full text-white bg-green-500">
+                                <p className="absolute text-xs font-semibold -top-1 -right-8 px-3 p-0.5 rounded-full text-white bg-orange-500">
                                     plus
                                 </p>
                             </Protect>
@@ -76,12 +105,16 @@ const Navbar = () => {
 
                             <Link href="/">Home</Link>
                             <Link href="/shop">Shop</Link>
-                            <Link href="/store">About</Link>
+                            <Link href="/wishlist">Favorite</Link>
+                            <Link href="/about">About</Link>
                             <Link href="/contact">Contact</Link>
 
                             {/* SEARCH ICON */}
                             <button
-                                onClick={() => setOpenSearch(prev => !prev)}
+                                onClick={() => {
+                                        if (openSearch) setSearch('');
+                                        setOpenSearch(prev => !prev);
+                                    }}
                                 className="p-2 hover:bg-gray-100 rounded-full transition">
                                 <Search size={18} />
                             </button>
@@ -99,7 +132,7 @@ const Navbar = () => {
                             {!user ? (
                                 <button
                                     onClick={openSignIn}
-                                    className="px-8 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full">
+                                    className="px-8 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-full">
                                     Login
                                 </button>
                             ) : (
@@ -111,21 +144,6 @@ const Navbar = () => {
                                             label="My Orders"
                                             onClick={() => router.push('/orders')}
                                         />
-
-                                        {isSeller && (
-                                            <UserButton.Action
-                                                labelIcon={<Store size={16} />}
-                                                label="Seller Dashboard"
-                                                onClick={() => router.push('/store')}
-                                            />
-                                        )}
-
-                                        <UserButton.Action
-                                            labelIcon={<Contact size={16} />}
-                                            label="Contact"
-                                            onClick={() => router.push('/contact')}
-                                        />
-
                                     </UserButton.MenuItems>
                                 </UserButton>
                             )}
@@ -142,13 +160,44 @@ const Navbar = () => {
                             >
                                 <Search size={20} />
                             </button>
+                            
 
                             {user ? (
-                                <UserButton />
+                                <UserButton>
+                                            <UserButton.MenuItems>
+
+                                                <UserButton.Action
+                                                    labelIcon={<Heart size={16}/>}
+                                                    label="Favorite"
+                                                    onClick={() => router.push('/wishlist')}
+                                                />
+
+                                                <UserButton.Action
+                                                    labelIcon={<PackageIcon size={16}/>}
+                                                    label="My Orders"
+                                                    onClick={() => router.push('/orders')}
+                                                />
+
+                                                {isSeller && (
+                                                    <UserButton.Action
+                                                        labelIcon={<Store size={16}/>}
+                                                        label="Seller Dashboard"
+                                                        onClick={() => router.push('/store')}
+                                                    />
+                                                )}
+
+                                                <UserButton.Action
+                                                    labelIcon={<Contact size={16}/>}
+                                                    label="Contact"
+                                                    onClick={() => router.push('/contact')}
+                                                />
+
+                                            </UserButton.MenuItems>
+                                        </UserButton>
                             ) : (
                                 <button
                                     onClick={openSignIn}
-                                    className="px-5 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-sm text-white rounded-full">
+                                    className="px-5 py-1.5 bg-orange-500 hover:bg-orange-600 text-sm text-white rounded-full">
                                     Login
                                 </button>
                             )}
@@ -170,12 +219,15 @@ const Navbar = () => {
                 {/* Overlay backdrop-blur-sm */}
                 <div
                     className="absolute inset-0 bg-black/10 "
-                    onClick={() => setOpenSearch(false)}
+                    onClick={() => {
+                        setOpenSearch(false);
+                        setSearch(''); 
+                    }}
                 />
 
                 {/* Dropdown Panel */}
                 <div
-                    className={`absolute left-0 top-[80px] w-full bg-white border-t
+                    className={`absolute left-0 top-[80px] w-full bg-white 
                     transform transition-all duration-300
                     ${openSearch ? "translate-y-0 opacity-100" : "-translate-y-6 opacity-0"}`}
                     onClick={(e) => e.stopPropagation()}
@@ -192,11 +244,12 @@ const Navbar = () => {
                             <Search size={22} className="text-gray-500" />
 
                             <input
+                                ref={inputRef}
                                 autoFocus
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Search products on CellGenS"
-                                className="w-full text-2xl outline-none"
+                                className="w-full text-2xl outline-none text-gray-700"
                             />
 
                         </form>
@@ -211,31 +264,31 @@ const Navbar = () => {
                                 <p
                                     onClick={() => {
                                         setOpenSearch(false)
-                                        router.push('/shop')
+                                        router.push('/wishlist')
                                     }}
                                     className="cursor-pointer hover:text-black transition hover:translate-x-1"
                                 >
-                                    → Shop
+                                    → Favorite
                                 </p>
 
                                 <p
                                     onClick={() => {
                                         setOpenSearch(false)
-                                        router.push('/store')
+                                        router.push('/wishlist')
                                     }}
                                     className="cursor-pointer hover:text-black transition hover:translate-x-1"
                                 >
-                                    → Store
+                                    → Cart
                                 </p>
 
                                 <p
                                     onClick={() => {
                                         setOpenSearch(false)
-                                        router.push('/contact')
+                                        router.push('/orders')
                                     }}
                                     className="cursor-pointer hover:text-black transition hover:translate-x-1"
                                 >
-                                    → Contact
+                                    → My Orders
                                 </p>
 
                             </div>

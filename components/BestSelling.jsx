@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 const BestSelling = () => {
 
-    const displayQuantity = 8
+    const displayQuantity = 10
     const products = useSelector(state => state.product.list)
 
     return (

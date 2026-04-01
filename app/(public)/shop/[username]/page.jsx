@@ -71,4 +71,5 @@ export default function StoreShop() {
             </div>
         </div>
     ) : <Loading />
+    
 }

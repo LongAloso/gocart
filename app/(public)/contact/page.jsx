@@ -7,7 +7,7 @@ const ContactPage = () => {
         <div className="max-w-4xl mx-auto px-6 py-16 text-slate-600">
             <div className="text-center mb-16 space-y-6">
                 <h1 className="text-3xl sm:text-4xl font-semibold text-slate-800">
-                    Contact <span className="text-green-600">Support</span>
+                    Contact <span className="text-orange-600">Support</span>
                 </h1>
                 <p className="text-slate-500 leading-relaxed max-w-5xl mx-auto">
                     If you encounter any problems while using our services, please contact us via 
@@ -15,9 +15,9 @@ const ContactPage = () => {
                     responding to customers as quickly as possible. We always value customer 
                     feedback and are committed to providing information and support to ensure 
                     maximum customer satisfaction when using 
-                    <span className="font-semibold text-slate-800 ml-1">TechGenZ</span> services.
+                    <span className="font-semibold text-slate-800 ml-1">CellGenZ</span> services.
                 </p>
-                <div className="h-1 w-50 bg-green-600 mx-auto rounded-full"></div>
+                <div className="h-1 w-50 bg-orange-600 mx-auto rounded-full"></div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -32,9 +32,9 @@ const ContactPage = () => {
                         </div>
                     </div>
                 </a>
-                <a className="group p-8 bg-white border border-slate-200 rounded-3xl hover:border-green-500 hover:shadow-xl hover:shadow-green-50/50 transition-all duration-300">
+                <a className="group p-8 bg-white border border-slate-200 rounded-3xl hover:border-orange-500 hover:shadow-xl hover:shadow-orange-50/50 transition-all duration-300">
                     <div className="flex items-center gap-5">
-                        <div className="p-4 bg-green-50 text-green-600 rounded-2xl group-hover:bg-green-600 group-hover:text-white transition-colors">
+                        <div className="p-4 bg-orange-50 text-orange-600 rounded-2xl group-hover:bg-orange-600 group-hover:text-white transition-colors">
                             <Phone size={28} />
                         </div>
                         <div>

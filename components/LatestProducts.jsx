@@ -10,7 +10,7 @@ const LatestProducts = () => {
     const products = useSelector(state => state.product.list)
 
     return (
-        <div className='px-10 my-10 max-w-7xl mx-auto'>
+        <div className='px-5 my-10 max-w-7xl mx-auto'>
             <Title title='Latest Products' description={`Showing ${products.length < displayQuantity ? products.length : displayQuantity} of ${products.length} products`} href='/shop' />
             <div className='mt-12  grid grid-cols-2 sm:flex flex-wrap gap-6 xl:gap-12'>
                 {products.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, displayQuantity).map((product, index) => (

@@ -87,3 +87,21 @@ export async function GET(request) {
     }
     
 }
+
+export async function DELETE(request) {
+    try {
+        const { userId } = getAuth(request)  
+        const storeId = await authSeller(userId)
+        if(!storeId) {
+            return NextResponse.json({error: 'not authorized'}, { status: 401})
+        }
+        const { searchParams } = request.nextUrl
+        const id = searchParams.get('id')
+        await prisma.product.delete({ where: { id }})
+        return NextResponse.json({ message: 'Product deteted successfully'})
+    } catch (error) {
+        console.error(error)
+        return NextResponse.json({error: error.code || error.mesage}, {status: 400})
+    }
+    
+}

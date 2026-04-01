@@ -2,7 +2,6 @@
 import { assets } from "@/assets/assets"
 import { useAuth } from "@clerk/nextjs"
 import axios from "axios"
-import { err } from "inngest/types"
 import Image from "next/image"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
@@ -20,50 +19,57 @@ export default function StoreAddProduct() {
         category: "",
     })
     const [loading, setLoading] = useState(false)
+    const [aiLoading, setAiLoading] = useState(false) // Trạng thái riêng cho nút AI
     const [aiUsed, setAiused] = useState(false)
     
-
     const { getToken } = useAuth()
 
     const onChangeHandler = (e) => {
         setProductInfo({ ...productInfo, [e.target.name]: e.target.value })
     }
-    const handleImageUpload = async (key, file) => {
 
+    const handleImageUpload = (key, file) => {
         setImages(prev => ({...prev, [key]: file}))
+    }
 
-        if(key === "1" && file && !aiUsed) {
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onloadend = async () => {
-                const base64String = reader.result.split(",")[1]
-                const mimeType = file.type
-                const token = await getToken()
+    // Chức năng mới: Chỉ chạy khi bấm nút
+    const generateAiContent = async () => {
+        const file = images[1]
+        if(!file) return toast.error("Please upload the first image first")
 
-                try {
-                    await toast.promise(
-                        axios.post('/api/store/ai', {base64Image: base64String, mimeType}, {headers: { Authorization: `Bearer ${token}`}}),
-                        {
-                            loading: "Analyzing image with AI...",
-                            success: (res) => {
-                                const data = res.data
-                                if(data.name && data.description) {
-                                    setProductInfo(prev => ({
-                                        ...prev,
-                                        name: data.name,
-                                        description: data.description
-                                    }))
-                                    setAiused(true)
-                                    return "AI filled product info 🎉"
-                                }
-                                return "Ai could not analyze the image"
-                            },
-                            error: (err) => err?.response?.data?.error || err.message
-                        }
-                    )
-                } catch (error) {
-                    console.error(error)
-                }
+        setAiLoading(true)
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = async () => {
+            const base64String = reader.result.split(",")[1]
+            const mimeType = file.type
+            const token = await getToken()
+
+            try {
+                await toast.promise(
+                    axios.post('/api/store/ai', {base64Image: base64String, mimeType}, {headers: { Authorization: `Bearer ${token}`}}),
+                    {
+                        loading: "Analyzing image with AI...",
+                        success: (res) => {
+                            const data = res.data
+                            if(data.name && data.description) {
+                                setProductInfo(prev => ({
+                                    ...prev,
+                                    name: data.name,
+                                    description: data.description
+                                }))
+                                setAiused(true)
+                                return "AI filled product info 🎉"
+                            }
+                            return "Ai could not analyze the image"
+                        },
+                        error: (err) => err?.response?.data?.error || err.message
+                    }
+                )
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setAiLoading(false)
             }
         }
     }
@@ -71,7 +77,6 @@ export default function StoreAddProduct() {
     const onSubmitHandler = async (e) => {
         e.preventDefault()
         try {
-            // if no images are uploaded then return
             if(!images[1] && !images[2] && !images[3] && !images[4]) {
                 return toast.error('Please upload at least one image')
             }
@@ -84,7 +89,6 @@ export default function StoreAddProduct() {
             formData.append('price', productInfo.price)
             formData.append('category', productInfo.category)
 
-            // Adding Images to FormData
             Object.keys(images).forEach((key) => {images[key] && formData.append('images', images[key])})
 
             const token = await getToken()
@@ -92,17 +96,9 @@ export default function StoreAddProduct() {
 
             toast.success(data.message)
 
-            // Reset form after completed submit
-            setProductInfo({
-                name: "",
-                description: "",
-                mrp: 0,
-                price: 0,
-                category: "",
-            })
-            
-            // Reset images
+            setProductInfo({ name: "", description: "", mrp: 0, price: 0, category: "" })
             setImages({ 1: null, 2: null, 3: null, 4: null})
+            setAiused(false)
 
         } catch (error) {
             toast.error(error?.response?.data?.error || error.message)
@@ -110,28 +106,43 @@ export default function StoreAddProduct() {
         finally {
             setLoading(false)
         }
-        
     }
 
-
     return (
-        <form onSubmit={e => toast.promise(onSubmitHandler(e), { loading: "Adding Product..." })} className="text-slate-500 mb-28">
+        <form onSubmit={e => { e.preventDefault(); toast.promise(onSubmitHandler(e), { loading: "Adding Product..." }) }} className="text-slate-500 mb-28">
             <h1 className="text-2xl">Add New <span className="text-slate-800 font-medium">Products</span></h1>
             <p className="mt-7">Product Images</p>
 
-            <div htmlFor="" className="flex gap-3 mt-4">
+            <div className="flex gap-3 mt-4">
                 {Object.keys(images).map((key) => (
                     <label key={key} htmlFor={`images${key}`}>
-                        <Image width={300} height={300} className='h-15 w-auto border border-slate-200 rounded cursor-pointer' src={images[key] ? URL.createObjectURL(images[key]) : assets.upload_area} alt="" />
+                        <Image width={300} height={300} className='h-15 w-auto border border-slate-200 rounded cursor-pointer bg-slate-100' src={images[key] ? URL.createObjectURL(images[key]) : assets.upload_area} alt="" />
                         <input type="file" accept='image/*' id={`images${key}`} onChange={e => handleImageUpload(key, e.target.files[0])} hidden />
                     </label>
                 ))}
+                
             </div>
+            <div>
+                                {/* Nút bấm Generate AI nằm cạnh ô Name */}
+                {images[1] && (
+                    <button 
+                        type="button" 
+                        onClick={generateAiContent} 
+                        disabled={aiLoading}
+                        className="mt-7 px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 disabled:bg-orange-300 transition text-sm"
+                    >
+                        {aiLoading ? "Generating..." : "Generating by AI"}
+                    </button>
+                )}
+            </div>
+            <div className="flex items-center gap-4 mt-6">
+                <label className="flex flex-col gap-2 w-full max-w-sm">
+                    Name
+                    <input type="text" name="name" onChange={onChangeHandler} value={productInfo.name} placeholder="Enter product name" className="p-2 px-4 outline-none border border-slate-200 rounded" required />
+                </label>
+                
 
-            <label htmlFor="" className="flex flex-col gap-2 my-6 ">
-                Name
-                <input type="text" name="name" onChange={onChangeHandler} value={productInfo.name} placeholder="Enter product name" className="w-full max-w-sm p-2 px-4 outline-none border border-slate-200 rounded" required />
-            </label>
+            </div>
 
             <label htmlFor="" className="flex flex-col gap-2 my-6 ">
                 Description
@@ -141,11 +152,11 @@ export default function StoreAddProduct() {
             <div className="flex gap-5">
                 <label htmlFor="" className="flex flex-col gap-2 ">
                     Actual Price ($)
-                    <input type="number" name="mrp" onChange={onChangeHandler} value={productInfo.mrp} placeholder="0" rows={5} className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded resize-none" required />
+                    <input type="number" name="mrp" onChange={onChangeHandler} value={productInfo.mrp} placeholder="0" className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded" required />
                 </label>
                 <label htmlFor="" className="flex flex-col gap-2 ">
                     Offer Price ($)
-                    <input type="number" name="price" onChange={onChangeHandler} value={productInfo.price} placeholder="0" rows={5} className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded resize-none" required />
+                    <input type="number" name="price" onChange={onChangeHandler} value={productInfo.price} placeholder="0" className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded" required />
                 </label>
             </div>
 
@@ -157,7 +168,6 @@ export default function StoreAddProduct() {
             </select>
 
             <br />
-
             <button disabled={loading} className="bg-slate-800 text-white px-6 mt-7 py-2 hover:bg-slate-900 rounded transition">Add Product</button>
         </form>
     )
