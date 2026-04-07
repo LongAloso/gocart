@@ -63,8 +63,6 @@ const ProductCard = ({ product, onRemove }) => {
             if (res.ok) {
                 setLiked(data.liked)
                 
-                // 2. LOGIC QUAN TRỌNG: Nếu đây là hành động "Hủy tim" (liked === false)
-                // và có hàm onRemove truyền từ trang Wishlist vào
                 if (data.liked) {
                     trackBehavior("favorite");
                 }

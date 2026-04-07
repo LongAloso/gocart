@@ -7,6 +7,7 @@ import { Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import RecommendedForYou from "@/components/RecommendedForYou"; 
 
 export default function Cart() {
 
@@ -94,11 +95,18 @@ export default function Cart() {
                     </table>
                     <OrderSummary totalPrice={totalPrice} items={cartArray} />
                 </div>
+                 <RecommendedForYou/>
             </div>
         </div>
     ) : (
-        <div className="min-h-[80vh] mx-6 flex items-center justify-center text-slate-400">
-            <h1 className="text-2xl sm:text-4xl font-semibold">Your cart is empty</h1>
+        <div>
+            <div className="min-h-[40vh] mx-6 flex items-center justify-center text-slate-400">
+                <h1 className="text-2xl sm:text-4xl font-semibold">Your cart is empty</h1>
         </div>
+            
+            <RecommendedForYou/>
+        </div>
+        
+        
     )
 }

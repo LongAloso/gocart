@@ -7,7 +7,6 @@ export default function AboutPage() {
     const router = useRouter()
     return (
         <div className="bg-white text-gray-800">
-        {/* Hero Section */}
         <section className="max-w-6xl mx-auto px-6 py-16 text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-6">
             About Our <span className="text-orange-500">CellGenS</span> E-Commerce Platform
@@ -19,7 +18,6 @@ export default function AboutPage() {
             </p>
         </section>
 
-        {/* Story Section */}
         <section className="bg-gray-50 py-16">
             <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
             <div>
@@ -67,7 +65,6 @@ export default function AboutPage() {
             </div>
         </section>
 
-        {/* Mission & Vision */}
         <section className="py-16">
             <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10">
             <div>

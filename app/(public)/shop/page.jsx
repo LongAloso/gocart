@@ -4,7 +4,7 @@ import ProductCard from "@/components/ProductCard"
 import { MoveLeftIcon, SearchX } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useSelector } from "react-redux"
-import BestSelling from "@/components/BestSelling"
+import RecommendedForYou from "@/components/RecommendedForYou"; 
 
  function ShopContent() {
 
@@ -39,16 +39,17 @@ import BestSelling from "@/components/BestSelling"
                         </button>
                        
                     </div>
-                    < BestSelling/>
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 sm:flex flex-wrap gap-6 xl:gap-12 mx-auto mb-32">
                         {filteredProducts.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
-                        <BestSelling/>
+                        
                     </div>
                 )}
+                    <RecommendedForYou/>
+
             </div>
         </div>
     )

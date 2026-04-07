@@ -32,7 +32,6 @@ export default function StoreAddProduct() {
         setImages(prev => ({...prev, [key]: file}))
     }
 
-    // Chức năng mới: Chỉ chạy khi bấm nút
     const generateAiContent = async () => {
         const file = images[1]
         if(!file) return toast.error("Please upload the first image first")
@@ -123,7 +122,7 @@ export default function StoreAddProduct() {
                 
             </div>
             <div>
-                                {/* Nút bấm Generate AI nằm cạnh ô Name */}
+                        
                 {images[1] && (
                     <button 
                         type="button" 
