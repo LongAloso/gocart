@@ -1,12 +1,18 @@
 <div align="center">
-  <h1>CellGenS</h1>
+  <h1>🛒CellGenS</h1>
   <p>
-    An open-source multi-vendor e-commerce platform built with Next.js and Tailwind CSS.
+    AI-Powered Multi-Vendor E-Commerce Platform built with Next.js and Tailwind CSS
   </p>
   <p>
-    <a href="https://github.com/GreatStackDev/goCart/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/GreatStackDev/goCart?style=for-the-badge" alt="License"></a>
-    <a href="https://github.com/GreatStackDev/goCart/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome"></a>
-    <a href="https://github.com/GreatStackDev/goCart/issues"><img src="https://img.shields.io/github/issues/GreatStackDev/goCart?style=for-the-badge" alt="GitHub issues"></a>
+    <a href="./LICENSE.md">
+      <img src="https://img.shields.io/github/license/LongAloso/CellGenS?style=for-the-badge" alt="License">
+    </a>
+    <a href="https://github.com/LongAloso/CellGenS/pulls">
+      <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome">
+    </a>
+    <a href="https://github.com/LongAloso/CellGenS/issues">
+      <img src="https://img.shields.io/github/issues/LongAloso/CellGenS?style=for-the-badge" alt="GitHub issues">
+    </a>
   </p>
 </div>
 
@@ -14,38 +20,123 @@
 
 ## 📖 Table of Contents
 
+- [Overview](#-overview)
 - [Features](#-features)
+- [AI Capabilities](#-ai-capabilities)
 - [Tech Stack](#-tech-stack)
+- [System Architecture](#-system-architecture)
 - [Getting Started](#-getting-started)
+- [Use Cases](#-use-cases)
 - [Contributing](#-contributing)
 - [License](#-license)
 
 ---
 
-## Features
+## 📌 Overview
 
-- **Multi-Vendor Architecture:** Allows multiple vendors to register, manage their own products, and sell on a single platform.
-- **Customer-Facing Storefront:** A beautiful and responsive user interface for customers to browse and purchase products.
-- **Vendor Dashboards:** Dedicated dashboards for vendors to manage products, view sales analytics, and track orders.
-- **Admin Panel:** A comprehensive dashboard for platform administrators to oversee vendors, products, and commissions.
+**CellGenS** is a modern **multi-vendor e-commerce platform** designed to deliver a scalable and intelligent shopping experience.
 
-## 🛠️ Tech Stack <a name="-tech-stack"></a>
+Unlike traditional marketplaces, CellGenS integrates **Artificial Intelligence** to:
+- Automate product content creation  
+- Personalize user experience  
+- Increase conversion rates and sales  
 
-- **Framework:** Next.js
-- **Styling:** Tailwind CSS
-- **UI Components:** Lucide React for icons
-- **State Management:** Redux Toolkit
+It is suitable for startups, developers, and businesses looking to build a **smart online marketplace**.
 
-## 🚀 Getting Started <a name="-getting-started"></a>
+---
 
-First, install the dependencies. We recommend using `npm` for this project.
+## ✨ Features
 
+### 🛍️ Multi-Vendor Architecture
+- Multiple vendors can register and sell products  
+- Each vendor has full control over:
+  - Product management (Add / Edit / Delete)  
+  - Inventory and pricing  
+
+### 🏪 Customer Storefront
+- Responsive and modern UI  
+- Smooth browsing and shopping experience  
+- Product discovery with enhanced UX  
+
+### 📊 Vendor Dashboard
+- Manage products and orders  
+- Track performance and sales  
+
+### 🛠️ Admin Panel
+- Manage vendors and products  
+- Monitor system activities  
+- Control platform operations  
+
+### 📦 Product Management
+- Full CRUD functionality  
+- Image upload support  
+- Structured product data  
+
+### ⭐ Rating & Review System
+- Customers can rate and review products  
+- Improves trust and product quality  
+
+### 🎁 Coupon System
+- Create discount campaigns  
+- Apply coupon codes during checkout  
+
+### 🎯 Customer Plus Experience
+- Personalized user interaction  
+- Improved engagement and retention  
+
+---
+
+## 🤖 AI Capabilities
+
+### 🧠 AI Content Generation
+- Automatically generates:
+  - Product titles  
+  - Product descriptions  
+- Triggered when uploading product images  
+- Saves time and improves SEO quality  
+
+### 📊 Recommendation System
+- Suggests products based on:
+  - User behavior  
+  - Browsing history  
+  - Interaction patterns  
+- Helps increase:
+  - Conversion rate  
+  - Revenue  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js  
+- **Styling:** Tailwind CSS  
+- **UI Components:** Lucide React  
+- **State Management:** Redux Toolkit  
+- **AI Integration:** Custom AI modules (content generation & recommendation)  
+
+---
+
+## 🏗️ System Architecture
+
+CellGenS is built with a scalable architecture:
+
+- **Frontend:** Next.js (App Router)  
+- **Backend:** API-based architecture  
+- **Database:** Stores users, products, and behavior data  
+- **AI Layer:**
+  - Image-to-text generation  
+  - Recommendation engine  
+
+---
+
+## 🚀 Getting Started
+
+### 1. Install dependencies
 ```bash
 npm install
 ```
 
-Then, run the development server:
-
+### 2. Run development server
 ```bash
 npm run dev
 # or
@@ -56,29 +147,66 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Open in browser
+```
+http://localhost:3000
+```
 
-You can start editing the page by modifying `app/(public)/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Outfit](https://vercel.com/font), a new font family for Vercel.
+### 4. Build for production
+```bash
+npm run build
+npm start
+```
 
 ---
 
-## 🤝 Contributing <a name="-contributing"></a>
+## 📈 Use Cases
 
-We welcome contributions! Please see our [CONTRIBUTING.md](./CONTRIBUTING.md) for more details on how to get started.
+- Multi-vendor marketplaces  
+- AI-powered e-commerce platforms  
+- Startup MVP for online shopping systems  
+- Smart recommendation-based stores  
 
 ---
 
-## 📜 License <a name="-license"></a>
+## 🤝 Contributing
 
-This project is licensed under the MIT License. See the [LICENSE.md](./LICENSE.md) file for details.
+We welcome contributions!
 
-## Learn More
+1. Fork the repository  
+2. Create a new branch  
+3. Commit your changes  
+4. Open a Pull Request  
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📜 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is licensed under the MIT License.  
+See the [LICENSE.md](./LICENSE.md) file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Ngo Van Long**  
+- Software Engineering Student  
+- Passionate about AI & Web Development  
+
+---
+
+## ⭐ Support
+
+If you find this project useful, please ⭐ star the repository to support it!
+
+---
+
+## 📚 Learn More
+
+To learn more about Next.js:
+
+- https://nextjs.org/docs  
+- https://nextjs.org/learn  
+
+You can also explore the official repository:  
+https://github.com/vercel/next.js
